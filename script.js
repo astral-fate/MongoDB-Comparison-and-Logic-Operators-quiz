@@ -1,6 +1,3 @@
-const quizForm = document.getElementById('quiz-form');
-const submitBtn = document.getElementById('submit-btn');
-const resultDiv = document.getElementById('result');
 // Quiz data
 const questions = [
   {
@@ -142,6 +139,124 @@ const questions = [
     ],
     correct: 0,
     explanation: "The first option is a valid MongoDB filter."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Justin",
+  "lname": "Mark",
+  "ssn": "11341102",
+  "salary": 4070.00,
+  "superssn": "1117600",
+  "phone": 12345
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 0,
+    explanation: "The JSON document is valid."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "ssn": 523,
+  "address": "Cairo",
+  "Address": "Giza"
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because it contains duplicate keys ('address' and 'Address')."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Mohamed",
+  "lname": "Mahmod",
+  "ssn": "11165102",
+  "salary": 4600.00,
+  "superssn": "761100",
+  "dno": NULL,
+  "phone": 12345
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because NULL should be written in lowercase as null."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "ssn": "112341102",
+  "bdate": "1968-01-12",
+  "address": "2342 May, Atlanta, GA",
+  "salary": 46500.00,
+  "superssn": "11541100"
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 0,
+    explanation: "The JSON document is valid."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Justin",
+  "lname": "Mark",
+  "ssn": "111111102",
+  "salary": 40000.00,
+  "superssn": "111111100",
+  "phone": 12345
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 0,
+    explanation: "The JSON document is valid."
+  },
+  {
+    question: "Which of the following is not a valid MongoDB filter?",
+    code: '{ "dno": {$gte:14,$lte:16} }',
+    options: [
+      '{ "dno": {$gte:14,$lte:16} }',
+      '{ $and:[{"dno":14},{salary:7.5}} ]',
+      '{ $or:[{"dno":{$gte:14,$lte:16}},{salary:7.5}} ]',
+      'None of the above'
+    ],
+    correct: 1,
+    explanation: "The second option is invalid due to incorrect syntax."
+  },
+  {
+    question: "Which of the following is a valid MongoDB filter?",
+    code: '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+    options: [
+      '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+      '{$or: [{"dno": {$gte:14, 16}}, {salary,$lte:25000}]}',
+      '{$or: [{"dno": {14, $lte:16}}, {$gte:25000}]}',
+      'None of the above'
+    ],
+    correct: 0,
+    explanation: "The first option is a valid MongoDB filter."
+  },
+  {
+    question: "Which of the following statements is represented by the MongoDB filter?",
+    code: '{ "day": {$gte:14, $lte:16} }',
+    options: [
+      'day >14 and day <=16',
+      'day >=14 and day <16',
+      'day >=14 and day <=16',
+      'None of the above'
+    ],
+    correct: 2,
+    explanation: "The filter matches documents where the day is greater than or equal to 14 and less than or equal to 16."
   }
 ];
 
