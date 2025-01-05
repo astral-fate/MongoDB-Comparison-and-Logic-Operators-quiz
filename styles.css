@@ -2,11 +2,11 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
-  padding: 20px; /* Added padding to body for better spacing */
-  min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+  padding: 20px;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align items to the top instead of center */
+  align-items: flex-start;
 }
 
 .quiz-container {
@@ -14,15 +14,16 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 800px;
-  margin: 20px 0; /* Added margin for better spacing */
-  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  width: 90%; /* Use percentage for responsive width */
+  max-width: 800px; /* Maximum width for larger screens */
+  margin: 20px 0;
+  overflow-y: auto;
 }
 
 h1 {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 24px; /* Adjust font size for better readability */
 }
 
 .question {
@@ -31,10 +32,17 @@ h1 {
 
 .question p {
   font-weight: bold;
+  font-size: 18px; /* Adjust font size for better readability */
 }
 
 .options {
   margin-left: 20px;
+}
+
+.options label {
+  display: block; /* Ensure each option is on a new line */
+  margin-bottom: 10px; /* Add spacing between options */
+  font-size: 16px; /* Adjust font size for better readability */
 }
 
 button {
@@ -47,7 +55,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 20px; /* Added margin for better spacing */
+  margin-top: 20px;
 }
 
 button:hover {
@@ -74,4 +82,51 @@ button:hover {
 
 .result-item strong {
   color: #333;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .quiz-container {
+    width: 95%; /* Increase width for smaller screens */
+    padding: 15px; /* Reduce padding for smaller screens */
+  }
+
+  h1 {
+    font-size: 22px; /* Adjust font size for smaller screens */
+  }
+
+  .question p {
+    font-size: 16px; /* Adjust font size for smaller screens */
+  }
+
+  .options label {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
+  button {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz-container {
+    width: 100%; /* Full width for very small screens */
+    padding: 10px; /* Further reduce padding for very small screens */
+  }
+
+  h1 {
+    font-size: 20px; /* Adjust font size for very small screens */
+  }
+
+  .question p {
+    font-size: 14px; /* Adjust font size for very small screens */
+  }
+
+  .options label {
+    font-size: 12px; /* Adjust font size for very small screens */
+  }
+
+  button {
+    font-size: 12px; /* Adjust font size for very small screens */
+  }
 }
