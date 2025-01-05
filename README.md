@@ -1,8 +1,5 @@
 # MongoDB-Comparison-and-Logic-Operators-quiz
 
-Certainly! Below is the transcribed and formatted content from the images, organized into a quiz-like format with questions and options:
-
----
 
 ### Question 1:
 **MongoDB Filter Representation**
