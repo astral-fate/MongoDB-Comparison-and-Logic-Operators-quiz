@@ -1,132 +1,115 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 20px;
-  min-height: 100vh;
+  background-color: #f4f4f9;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .quiz-container {
   background-color: #fff;
-  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 90%; /* Use percentage for responsive width */
-  max-width: 800px; /* Maximum width for larger screens */
-  margin: 20px 0;
-  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
 }
 
-h1 {
+.quiz-header {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px; /* Adjust font size for better readability */
 }
 
-.question {
-  margin-bottom: 15px;
+.quiz-header h1 {
+  font-size: 24px;
+  margin: 0;
 }
 
-.question p {
-  font-weight: bold;
-  font-size: 18px; /* Adjust font size for better readability */
+#question-count {
+  font-size: 14px;
+  color: #666;
 }
 
-.options {
-  margin-left: 20px;
+.quiz-body {
+  text-align: left;
 }
 
-.options label {
-  display: block; /* Ensure each option is on a new line */
-  margin-bottom: 10px; /* Add spacing between options */
-  font-size: 16px; /* Adjust font size for better readability */
+#question-text {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-button {
-  display: block;
-  width: 100%;
+#question-code {
+  background-color: #f8f9fa;
   padding: 10px;
+  border-radius: 4px;
+  font-family: monospace;
+  margin-bottom: 20px;
+}
+
+#options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-button {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.option-button:hover {
+  background-color: #dee2e6;
+}
+
+.option-button.correct {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.option-button.incorrect {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+#feedback {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+#feedback.correct {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+#feedback.incorrect {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.hidden {
+  display: none;
+}
+
+#next-button {
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 10px 20px;
   cursor: pointer;
-  font-size: 16px;
   margin-top: 20px;
+  width: 100%;
 }
 
-button:hover {
+#next-button:hover {
   background-color: #0056b3;
-}
-
-#result {
-  margin-top: 20px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.result-item {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.result-item p {
-  margin: 5px 0;
-}
-
-.result-item strong {
-  color: #333;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .quiz-container {
-    width: 95%; /* Increase width for smaller screens */
-    padding: 15px; /* Reduce padding for smaller screens */
-  }
-
-  h1 {
-    font-size: 22px; /* Adjust font size for smaller screens */
-  }
-
-  .question p {
-    font-size: 16px; /* Adjust font size for smaller screens */
-  }
-
-  .options label {
-    font-size: 14px; /* Adjust font size for smaller screens */
-  }
-
-  button {
-    font-size: 14px; /* Adjust font size for smaller screens */
-  }
-}
-
-@media (max-width: 480px) {
-  .quiz-container {
-    width: 100%; /* Full width for very small screens */
-    padding: 10px; /* Further reduce padding for very small screens */
-  }
-
-  h1 {
-    font-size: 20px; /* Adjust font size for very small screens */
-  }
-
-  .question p {
-    font-size: 14px; /* Adjust font size for very small screens */
-  }
-
-  .options label {
-    font-size: 12px; /* Adjust font size for very small screens */
-  }
-
-  button {
-    font-size: 12px; /* Adjust font size for very small screens */
-  }
 }
