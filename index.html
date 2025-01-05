@@ -3,18 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Quiz</title>
+  <title>Quiz App</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="quiz-container">
-    <h1>Interactive Quiz</h1>
-    <form id="quiz-form">
-      <!-- Questions will be dynamically inserted here -->
-    </form>
-    <button id="submit-btn">Submit Quiz</button>
-    <div id="result"></div>
+    <div class="quiz-header">
+      <h1>Quiz App</h1>
+      <p id="question-count">Question 1 of 3</p>
+    </div>
+    <div class="quiz-body">
+      <h2 id="question-text">What is the correct way to query for documents where the age field is greater than 25?</h2>
+      <pre id="question-code"><code>db.users.find({ /* your answer here */ })</code></pre>
+      <div id="options-container">
+        <!-- Options will be dynamically inserted here -->
+      </div>
+      <div id="feedback" class="hidden">
+        <p id="feedback-text"></p>
+      </div>
+      <button id="next-button" class="hidden">Next Question</button>
+    </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
