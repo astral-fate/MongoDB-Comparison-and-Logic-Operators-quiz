@@ -3,15 +3,22 @@ const submitBtn = document.getElementById('submit-btn');
 const resultDiv = document.getElementById('result');
 
 const questions = [
+  // Add all 19 questions here
+  // Example:
   {
-    question: "Which of the following statements is represented by the MongoDB filter: {$or: [{'day': {$gt: 12, $lt: 15}}, {'hour': 56.5}]}?",
+    question: "Does the following code represent a JSON document in a standard format? 'ssn': '112341102', 'bdate': DATE('1968-01-12'), 'address': '2342 May', 'Atlanta', 'GA', 'salary': 46500.00, 'superssn': '11541100'",
+    options: ["a) Correct", "b) Not correct"],
+    answer: "b"
+  },
+  {
+    question: "Which of the following statements is represented by the MongoDB filter: { 'day': {Sgte: 14, $lte: 16} }?",
     options: [
-      "a) day <= 15 and day >= 12 or hour = 56.5",
-      "b) (day <= 15 and day > 12) or hour = 56.5",
-      "c) day <= 15 or day > 12 or hour = 56.5",
+      "a) day > 14 and day <= 16",
+      "b) day >= 14 and day < 16",
+      "c) day >= 14 and day <= 16",
       "d) None of the above"
     ],
-    answer: "b"
+    answer: "c"
   },
   {
     question: "Which of the following statements is represented by the MongoDB filter: {Sor: [{'day': {$gt: 12, Slte: 15}}, {'hour': 56.5}]}?",
@@ -149,7 +156,6 @@ const questions = [
     answer: "a"
   }
 ];
-
 // Dynamically render questions
 function renderQuestions() {
   const form = document.getElementById('quiz-form');
@@ -171,23 +177,38 @@ function renderQuestions() {
   });
 }
 
-// Check answers
+// Check answers and display results
 function checkAnswers() {
   let score = 0;
+  let resultsHTML = "<h2>Quiz Results</h2>";
+
   questions.forEach((q, index) => {
     const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
-    if (selectedOption && selectedOption.value === q.answer) {
+    const userAnswer = selectedOption ? selectedOption.value : "Not answered";
+    const isCorrect = userAnswer === q.answer;
+
+    if (isCorrect) {
       score++;
     }
+
+    resultsHTML += `
+      <div class="result-item">
+        <p><strong>Question ${index + 1}:</strong> ${q.question}</p>
+        <p><strong>Your Answer:</strong> ${userAnswer}</p>
+        <p><strong>Correct Answer:</strong> ${q.answer}</p>
+        <p><strong>Status:</strong> ${isCorrect ? "Correct" : "Incorrect"}</p>
+      </div>
+    `;
   });
-  return score;
+
+  resultsHTML += `<h3>You scored ${score} out of ${questions.length}!</h3>`;
+  resultDiv.innerHTML = resultsHTML;
 }
 
 // Event listener for submit button
 submitBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  const score = checkAnswers();
-  resultDiv.textContent = `You scored ${score} out of ${questions.length}!`;
+  checkAnswers();
 });
 
 // Render questions on page load
