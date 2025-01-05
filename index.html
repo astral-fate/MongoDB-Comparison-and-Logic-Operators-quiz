@@ -4,17 +4,135 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz App</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Copy your existing CSS here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .quiz-header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    #question-count {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .quiz-body {
+      text-align: left;
+    }
+
+    #question-text {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #question-code {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+    }
+
+    #options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-button {
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .option-button:hover {
+      background-color: #dee2e6;
+    }
+
+    .option-button.correct {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    .option-button.incorrect {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+
+    #feedback {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    #feedback.correct {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    #feedback.incorrect {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #next-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    #next-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
   <div class="quiz-container">
     <div class="quiz-header">
       <h1>Quiz App</h1>
-      <p id="question-count">Question 1 of 19</p>
+      <p id="question-count"></p>
     </div>
     <div class="quiz-body">
-      <h2 id="question-text">What is the correct way to query for documents where the age field is greater than 25?</h2>
-      <pre id="question-code"><code>db.users.find({ /* your answer here */ })</code></pre>
+      <h2 id="question-text"></h2>
+      <pre id="question-code"><code></code></pre>
       <div id="options-container">
         <!-- Options will be dynamically inserted here -->
       </div>
@@ -25,6 +143,358 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+// Quiz data
+const questions = [
+  {
+    question: "Which of the following statements is represented by the MongoDB filter?",
+    code: '{$or: [{"day": {$gt: 12, $lt: 15}}, {"hour": 56.5}]}',
+    options: [
+      'day <= 15 and day >= 12 or hour = 56.5',
+      '(day <= 15 and day > 12) or hour = 56.5',
+      'day <= 15 or day > 12 or hour = 56.5',
+      'None of the above'
+    ],
+    correct: 1,
+    explanation: "The correct interpretation of the filter is that it matches documents where the day is greater than 12 and less than or equal to 15, or the hour is exactly 56.5."
+  },
+  {
+    question: "Which of the following is not a valid MongoDB filter?",
+    code: '{ "dno": {$gte:14,$lte:16} }',
+    options: [
+      '{ "dno": {$gte:14,$lte:16} }',
+      '{ $and:[{"dno":14},{salary:7.5}} ]',
+      '{ $or:[{"dno":{$gte:14,$lte:16}},{salary:7.5}} ]',
+      'None of the above'
+    ],
+    correct: 1,
+    explanation: "The second option is invalid due to incorrect syntax."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Justin",
+  "lname": "Mark",
+  "ssn": "11341102",
+  "salary": 4070.00,
+  "superssn": "1117600",
+  "phone": 12345,
+  "phone": 7998710
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because it contains duplicate keys ('phone')."
+  },
+  {
+    question: "Which of the following is a valid MongoDB filter?",
+    code: '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+    options: [
+      '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+      '{$or: [{"dno": {$gte:14, 16}}, {salary,$lte:25000}]}',
+      '{$or: [{"dno": {14, $lte:16}}, {$gte:25000}]}',
+      'None of the above'
+    ],
+    correct: 0,
+    explanation: "The first option is a valid MongoDB filter."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Ali",
+  "minit": 'n',
+  "lname": "Mohamed",
+  "ssn": "1123411102",
+  "salary": 56000.00
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because single quotes (') are used instead of double quotes (\")."
+  },
+  {
+    question: "Which of the following statements is represented by the MongoDB filter?",
+    code: '{ "day": {$gte:14, $lte:16} }',
+    options: [
+      'day >14 and day <=16',
+      'day >=14 and day <16',
+      'day >=14 and day <=16',
+      'None of the above'
+    ],
+    correct: 2,
+    explanation: "The filter matches documents where the day is greater than or equal to 14 and less than or equal to 16."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "ssn": "112341102",
+  "bdate": DATE("1968-01-12"),
+  "address": "2342 May","Atlanta","GA",
+  "salary": 46500.00,
+  "superssn": "11541100"
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because the DATE function is not valid in JSON."
+  },
+  {
+    question: "Which of the following is not a valid MongoDB filter?",
+    code: '{ "dno": {$gte:14,$lte:16} }',
+    options: [
+      '{ "dno": {$gte:14,$lte:16} }',
+      '{ $and:[{"dno":14},{salary:7.5}} ]',
+      '{ $or:[{"dno":{$gte:14,$lte:16}},{salary:7.5}} ]',
+      'None of the above'
+    ],
+    correct: 1,
+    explanation: "The second option is invalid due to incorrect syntax."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Justin",
+  "lname": "Mark",
+  "ssn": "111111102",
+  "salary": 40000.00,
+  "superssn": "111111100",
+  "phone": 12345,
+  "is a manager": TRUE
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because TRUE should be written in lowercase as true."
+  },
+  {
+    question: "Which of the following is a valid MongoDB filter?",
+    code: '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+    options: [
+      '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+      '{$or: [{"dno": {$gte:14, 16}}, {salary,$lte:25000}]}',
+      '{$or: [{"dno": {14, $lte:16}}, {$gte:25000}]}',
+      'None of the above'
+    ],
+    correct: 0,
+    explanation: "The first option is a valid MongoDB filter."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Justin",
+  "lname": "Mark",
+  "ssn": "11341102",
+  "salary": 4070.00,
+  "superssn": "1117600",
+  "phone": 12345
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 0,
+    explanation: "The JSON document is valid."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "ssn": 523,
+  "address": "Cairo",
+  "Address": "Giza"
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because it contains duplicate keys ('address' and 'Address')."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Mohamed",
+  "lname": "Mahmod",
+  "ssn": "11165102",
+  "salary": 4600.00,
+  "superssn": "761100",
+  "dno": NULL,
+  "phone": 12345
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 1,
+    explanation: "The JSON document is not valid because NULL should be written in lowercase as null."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "ssn": "112341102",
+  "bdate": "1968-01-12",
+  "address": "2342 May, Atlanta, GA",
+  "salary": 46500.00,
+  "superssn": "11541100"
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 0,
+    explanation: "The JSON document is valid."
+  },
+  {
+    question: "Does the following code represent a JSON document in a standard format?",
+    code: `{
+  "fname": "Justin",
+  "lname": "Mark",
+  "ssn": "111111102",
+  "salary": 40000.00,
+  "superssn": "111111100",
+  "phone": 12345
+}`,
+    options: [
+      'Correct',
+      'Not correct'
+    ],
+    correct: 0,
+    explanation: "The JSON document is valid."
+  },
+  {
+    question: "Which of the following is not a valid MongoDB filter?",
+    code: '{ "dno": {$gte:14,$lte:16} }',
+    options: [
+      '{ "dno": {$gte:14,$lte:16} }',
+      '{ $and:[{"dno":14},{salary:7.5}} ]',
+      '{ $or:[{"dno":{$gte:14,$lte:16}},{salary:7.5}} ]',
+      'None of the above'
+    ],
+    correct: 1,
+    explanation: "The second option is invalid due to incorrect syntax."
+  },
+  {
+    question: "Which of the following is a valid MongoDB filter?",
+    code: '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+    options: [
+      '{$or: [{"dno": {$gte:14, $lte:16}}, {salary:25000}]}',
+      '{$or: [{"dno": {$gte:14, 16}}, {salary,$lte:25000}]}',
+      '{$or: [{"dno": {14, $lte:16}}, {$gte:25000}]}',
+      'None of the above'
+    ],
+    correct: 0,
+    explanation: "The first option is a valid MongoDB filter."
+  },
+  {
+    question: "Which of the following statements is represented by the MongoDB filter?",
+    code: '{ "day": {$gte:14, $lte:16} }',
+    options: [
+      'day >14 and day <=16',
+      'day >=14 and day <16',
+      'day >=14 and day <=16',
+      'None of the above'
+    ],
+    correct: 2,
+    explanation: "The filter matches documents where the day is greater than or equal to 14 and less than or equal to 16."
+  }
+];
+    let currentQuestion = 0;
+    let score = 0;
+
+    // DOM elements
+    const questionCountElement = document.getElementById('question-count');
+    const questionTextElement = document.getElementById('question-text');
+    const questionCodeElement = document.getElementById('question-code');
+    const optionsContainer = document.getElementById('options-container');
+    const feedbackElement = document.getElementById('feedback');
+    const feedbackTextElement = document.getElementById('feedback-text');
+    const nextButton = document.getElementById('next-button');
+
+    // Load a question into the UI
+    function loadQuestion() {
+      const question = questions[currentQuestion];
+      // Update this line to use the actual length of the questions array
+      questionCountElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+      questionTextElement.textContent = question.question;
+      questionCodeElement.textContent = question.code;
+
+      // Clear previous options
+      optionsContainer.innerHTML = '';
+
+      // Add new options
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.classList.add('option-button');
+        button.textContent = option;
+        button.addEventListener('click', () => checkAnswer(index));
+        optionsContainer.appendChild(button);
+      });
+
+      // Reset feedback and next button
+      feedbackElement.classList.add('hidden');
+      feedbackElement.classList.remove('correct', 'incorrect');
+      nextButton.classList.add('hidden');
+    }
+
+    // Check if the selected answer is correct
+    function checkAnswer(selectedIndex) {
+      const question = questions[currentQuestion];
+      const optionButtons = document.querySelectorAll('.option-button');
+
+      // Disable all buttons after selection
+      optionButtons.forEach((button) => {
+        button.disabled = true;
+      });
+
+      // Highlight correct and incorrect answers
+      optionButtons.forEach((button, index) => {
+        if (index === question.correct) {
+          button.classList.add('correct');
+        } else if (index === selectedIndex) {
+          button.classList.add('incorrect');
+        }
+      });
+
+      // Show feedback
+      feedbackElement.classList.remove('hidden');
+      if (selectedIndex === question.correct) {
+        feedbackElement.classList.add('correct');
+        feedbackElement.classList.remove('incorrect');
+        feedbackTextElement.textContent = `Correct! ${question.explanation}`;
+        score++;
+      } else {
+        feedbackElement.classList.add('incorrect');
+        feedbackElement.classList.remove('correct');
+        feedbackTextElement.textContent = `Incorrect. ${question.explanation}`;
+      }
+
+      // Show next button
+      nextButton.classList.remove('hidden');
+    }
+
+    // Move to the next question or end the quiz
+    nextButton.addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        // Quiz is complete
+        alert(`Quiz complete! Your score is ${score}/${questions.length}.`);
+        currentQuestion = 0;
+        score = 0;
+        loadQuestion();
+      }
+    });
+
+    // Load the first question when the page loads
+    loadQuestion();
+  </script>
 </body>
 </html>
